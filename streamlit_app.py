@@ -30,35 +30,6 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# --- Sidebar untuk Input API Key ---
-st.sidebar.title("⚙️ Konfigurasi")
-
-# Coba dapatkan API key dari session state.
-if 'openai_api_key' not in st.session_state:
-    # Jika tidak ada di session state, coba dari st.secrets (untuk kemudahan saat deploy)
-    try:
-        st.session_state.openai_api_key = st.secrets.get("openai", {}).get("api_key")
-    except (FileNotFoundError, KeyError):
-        st.session_state.openai_api_key = None
-
-# Jika API key masih belum ada, minta pengguna untuk memasukkannya.
-if not st.session_state.get("openai_api_key"):
-    api_key_input = st.sidebar.text_input(
-        "Masukkan OpenAI API Key Anda:",
-        type="password",
-        help="Anda bisa mendapatkan API key di https://platform.openai.com/account/api-keys"
-    )
-    if api_key_input:
-        st.session_state.openai_api_key = api_key_input
-        st.rerun()
-# Jika API key sudah ada, tampilkan pesan dan tombol untuk mengganti key.
-else:
-    st.sidebar.success("API Key berhasil dimuat.", icon="✅")
-    if st.sidebar.button("Ganti API Key"):
-        del st.session_state.openai_api_key
-        st.rerun()
-
-
 # --- Fungsi Caching untuk Setup Mahal ---
 @st.cache_resource
 def _setup_database():
@@ -155,7 +126,7 @@ Final Answer: Jawaban akhir untuk pertanyaan asli.
 
 Pedoman Operasional:
 1.  **Evaluasi Hasil (PENTING):** Setelah setiap `Observation`, evaluasi apakah informasi tersebut sudah cukup untuk menjawab pertanyaan pengguna. Jika tidak, jangan langsung memberikan jawaban. Pikirkan (`Thought`) kembali dan gunakan tool lain yang lebih sesuai untuk melengkapi informasi.
-2.  **User Flow (Hirarki Tool):**
+2.  **User Flow (Hirarki Tool):
     * Untuk pertanyaan spesifik tentang **stok, harga, atau data numerik** dari produk, **selalu prioritaskan** penggunaan tool `sql_db_query`.
     * Untuk pertanyaan tentang **kebijakan (garansi, retur), panduan umum, atau deskripsi fitur**, gunakan `product_and_faq_retriever`.
     * **Jika `product_and_faq_retriever` tidak memberikan jawaban yang spesifik (misalnya tentang ketersediaan stok), Anda HARUS mencoba `sql_db_query` pada langkah berikutnya untuk mendapatkan jawaban definitif.**
@@ -223,7 +194,7 @@ def chat_page(page_title, session_state_key, agent_executor):
         st.session_state[session_state_key] = []
 
     for message in st.session_state[session_state_key]:
-        with st.chat_message(message["role"]):
+        with st.chat_message(message["role"):
             st.markdown(message["content"])
             if message["role"] == "assistant" and "thinking" in message and message["thinking"]:
                 with st.expander("Lihat Alur Berpikir Agen"):
@@ -302,13 +273,17 @@ def edit_data_page():
 
 
 # --- Main App Logic ---
-# Aplikasi utama hanya berjalan jika API key sudah tersedia.
-if not st.session_state.get("openai_api_key"):
-    st.info("Harap masukkan OpenAI API Key Anda di sidebar untuk memulai.")
+# Coba dapatkan API key dari st.secrets
+openai_api_key = st.secrets.get("OPENAI_API_KEY")
+
+# Periksa apakah API key tersedia
+if not openai_api_key:
+    st.error("Kunci API OpenAI tidak ditemukan. Harap atur di Streamlit Secrets dengan nama 'OPENAI_API_KEY'.")
+    st.info("Untuk informasi lebih lanjut, kunjungi dokumentasi Streamlit: https://docs.streamlit.io/deploy/streamlit-community-cloud/deploy-your-app/secrets-management")
     st.stop()
 
 try:
-    agent_executor = load_agent_executor(st.session_state.openai_api_key)
+    agent_executor = load_agent_executor(openai_api_key)
 except Exception as e:
     st.error(f"Gagal memuat agen. Pastikan API Key Anda valid. Error: {e}")
     st.stop()
