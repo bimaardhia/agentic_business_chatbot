@@ -194,7 +194,7 @@ def chat_page(page_title, session_state_key, agent_executor):
         st.session_state[session_state_key] = []
 
     for message in st.session_state[session_state_key]:
-        with st.chat_message(message["role"):
+        with st.chat_message(message["role"]):
             st.markdown(message["content"])
             if message["role"] == "assistant" and "thinking" in message and message["thinking"]:
                 with st.expander("Lihat Alur Berpikir Agen"):
