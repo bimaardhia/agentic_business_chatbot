@@ -1,22 +1,56 @@
-# Dashboard Agen AI untuk Analisis Bisnis
+# Dashboard Agen AI untuk Analisis Bisnis Cerdas
 
-Proyek ini adalah aplikasi web interaktif yang dibangun menggunakan Streamlit. Aplikasi ini berfungsi sebagai dashboard cerdas yang ditenagai oleh AI untuk melakukan analisis data bisnis dari database internal. Pengguna dapat berinteraksi dengan AI melalui antarmuka chat untuk mendapatkan wawasan, membuat laporan, dan bahkan mengubah data secara langsung.
+## Abstrak
 
-##  Fitur Utama
+Proyek ini menghadirkan sebuah aplikasi web interaktif yang berfungsi sebagai **Dashboard Agen AI** untuk analisis bisnis. Dibangun dengan Streamlit dan ditenagai oleh LangChain dan model bahasa dari OpenAI, aplikasi ini mengubah cara interaksi dengan data bisnis. Alih-alih menggunakan dashboard statis, pengguna dapat berkomunikasi langsung dengan agen AI melalui antarmuka chat untuk menanyakan data, meminta analisis, hingga menghasilkan laporan harian secara dinamis. Aplikasi ini dirancang untuk menjembatani kesenjangan antara data teknis dan pengambilan keputusan bisnis yang strategis.
 
-- **User Flow**: Antarmuka chat untuk pengguna umum yang dapat menjawab pertanyaan seputar produk, kebijakan, dan FAQ menggunakan RAG (Retrieval-Augmented Generation).
-- **Admin Flow**: Antarmuka chat untuk admin yang mampu melakukan analisis data mendalam, kalkulasi, dan query SQL kompleks ke database.
-- **Daily Insight Generator**: Fitur untuk membuat laporan harian otomatis yang merangkum tren penjualan kuantitatif dan wawasan kualitatif dari interaksi pelanggan.
-- **Edit Data**: Halaman untuk mengelola data master, memungkinkan pengguna untuk menambah, mengubah, atau menghapus data produk dan penjualan langsung dari antarmuka.
+## Latar Belakang
 
-## Teknologi yang Digunakan
+Dalam lingkungan bisnis yang serba cepat, akses cepat dan tepat terhadap data menjadi krusial. Namun, sering kali manajer bisnis atau pemangku kepentingan non-teknis kesulitan untuk mendapatkan wawasan dari database tanpa bantuan seorang analis data. Proses query data yang manual, pembuatan laporan yang memakan waktu, dan dashboard BI (Business Intelligence) yang kaku menjadi penghambat. Proyek ini lahir dari kebutuhan untuk mendemokratisasi akses data, memungkinkan siapa saja di dalam organisasi untuk "berbicara" dengan data mereka dan mendapatkan jawaban secara instan.
+
+## Tujuan Proyek
+
+- **Memberikan Akses Intuitif ke Data**: Menyediakan antarmuka percakapan (chat) sebagai cara utama untuk berinteraksi dengan database bisnis, menghilangkan kebutuhan akan keahlian SQL atau analisis data yang kompleks.
+- **Mempercepat Pengambilan Keputusan**: Memungkinkan pengguna untuk mendapatkan analisis data, tren penjualan, dan wawasan pelanggan secara real-time untuk mendukung keputusan yang lebih cepat dan berbasis data.
+- **Mengotomatisasi Pelaporan**: Menyediakan fitur untuk menghasilkan ringkasan dan laporan harian secara otomatis, menghemat waktu dan sumber daya.
+- **Menyediakan Platform Terpusat**: Menggabungkan kemampuan analisis, visualisasi, dan manajemen data dalam satu aplikasi yang mudah digunakan.
+
+## Fitur dan Kemampuan
+
+Aplikasi ini memiliki beberapa halaman dengan fungsi yang spesifik:
+
+### 1. User Flow
+- **Untuk Siapa**: Pengguna umum, seperti tim penjualan atau customer service.
+- **Kemampuan**: Dapat menjawab pertanyaan umum seputar produk, kebijakan perusahaan, dan pertanyaan yang sering diajukan (FAQ). Contohnya:
+  - *"Apa saja metode pembayaran yang diterima?"*
+  - *"Berapa lama garansi untuk laptop Dell XPS 15?"*
+  - *"Bagaimana cara memilih laptop untuk desain grafis?"*
+
+### 2. Admin Flow
+- **Untuk Siapa**: Manajer, analis, atau pemilik bisnis.
+- **Kemampuan**: Mampu melakukan analisis data yang lebih kompleks, menggabungkan data, dan melakukan perhitungan. Agen AI di halaman ini dapat menerjemahkan pertanyaan menjadi query SQL dan bahkan menjalankan kode Python untuk analisis lebih lanjut. Contohnya:
+  - *"Berapa total pendapatan dari penjualan online bulan ini?"*
+  - *"Tampilkan produk terlaris berdasarkan kuantitas penjualan."
+  - *"Hitung rata-rata harga jual semua produk."
+
+### 3. Daily Insight Generator
+- **Untuk Siapa**: Tim manajemen dan strategi.
+- **Kemampuan**: Secara otomatis menghasilkan laporan harian dengan memilih tanggal. Laporan ini menggabungkan:
+  - **Analisis Kuantitatif**: Data penjualan dari database (misalnya, total penjualan, produk terlaris hari itu).
+  - **Analisis Kualitatif**: Wawasan dari riwayat percakapan pelanggan (misalnya, keluhan umum, produk yang sering ditanyakan).
+
+### 4. Edit Data
+- **Untuk Siapa**: Administrator database atau manajer produk.
+- **Kemampuan**: Menyediakan antarmuka seperti spreadsheet untuk mengelola data di dalam database. Pengguna dapat menambah, mengubah, atau menghapus data pada tabel `products` dan `sales` secara langsung dan menyimpannya kembali ke database.
+
+## Arsitektur dan Teknologi
 
 - **Frontend**: Streamlit
-- **Orkestrasi AI**: LangChain
+- **Orkestrasi AI**: LangChain (menggunakan ReAct Agent)
 - **Model Bahasa**: OpenAI (GPT-4o)
-- **Database**: SQLite
+- **Database**: SQLite (untuk data produk dan penjualan)
 - **Analisis Data**: Pandas
-- **Vector Store**: FAISS
+- **Vector Store**: FAISS (untuk RAG pada data tekstual seperti FAQ dan kebijakan)
 
 ## Setup dan Instalasi
 
@@ -34,14 +68,14 @@ Proyek ini adalah aplikasi web interaktif yang dibangun menggunakan Streamlit. A
     ```
 
 3.  **Install dependensi:**
-    > **Catatan:** File `requirements.txt` tidak dapat dibaca. Daftar di bawah ini dibuat berdasarkan analisis kode. Anda mungkin perlu menyesuaikannya.
+    > **Catatan:** File `requirements.txt` tidak dapat dibaca dengan benar. Daftar di bawah ini dibuat berdasarkan analisis kode. Anda mungkin perlu menyesuaikannya.
     ```bash
     pip install streamlit sqlalchemy pandas langchain-openai langchain-community langchain-core langchain langchain-text-splitters langchain-experimental faiss-cpu
     ```
 
 ## Konfigurasi
 
-Aplikasi ini memerlukan kunci API dari OpenAI. Untuk menjalankannya, Anda harus menyimpannya di dalam fitur **Streamlit Secrets**.
+Aplikasi ini memerlukan kunci API dari OpenAI untuk berfungsi. Kunci ini harus disimpan di dalam **Streamlit Secrets**.
 
 1.  Buat file `.streamlit/secrets.toml` di dalam direktori proyek Anda.
 2.  Tambahkan kunci API Anda ke dalam file tersebut dengan format berikut:
@@ -58,4 +92,4 @@ Setelah instalasi dan konfigurasi selesai, jalankan aplikasi dengan perintah ber
 streamlit run streamlit_app.py
 ```
 
-Aplikasi akan terbuka secara otomatis di browser Anda.
+Aplikasi akan terbuka secara otomatis di browser web Anda.
